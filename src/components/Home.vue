@@ -15,18 +15,50 @@
       </Resume>
     </template>
     <template #movements>
-      <Movements />
+      <Movements :movements="movements" />
     </template>
   </Layout>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import Header from "@/components/Header.vue";
 import Layout from "@/components/Layout.vue";
-import Resume from "@/components/Resume.vue";
-import Movements from "@/components/Movements.vue";
+import Resume from "@/components/Resume/Index.vue";
+import Movements from "@/components/Movements/Index.vue";
 
 const label = ref("Diciembre 31");
 const amount = ref(null);
+const movements = reactive([
+  {
+    id: 1,
+    title: "Movimiento",
+    description: "Deposito de salario",
+    amount: "1000",
+  },
+  {
+    id: 2,
+    title: "Movimiento 1",
+    description: "Deposito de honorarios",
+    amount: "500",
+  },
+  {
+    id: 3,
+    title: "Movimiento 3",
+    description: "Comida",
+    amount: "-100",
+  },
+  {
+    id: 4,
+    title: "Movimiento 4",
+    description: "Colegiatura",
+    amount: "1000",
+  },
+  {
+    id: 5,
+    title: "Movimiento 5",
+    description: "Reparación equipo",
+    amount: "1000",
+  },
+]);
 </script>
