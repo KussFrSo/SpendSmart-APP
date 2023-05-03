@@ -10,7 +10,7 @@
         totalAmount="1000000"
         :amount="amount"
       >
-        <template #graphic> graphic </template>
+        <template #graphic> <Graphic :amounts="amounts" /> </template>
         <template #action> <Action /> </template>
       </Resume>
     </template>
@@ -27,9 +27,11 @@ import Layout from "@/components/Layout.vue";
 import Resume from "@/components/Resume/Index.vue";
 import Movements from "@/components/Movements/Index.vue";
 import Action from "@/components/Action.vue";
+import Graphic from "@/components/Resume/Graphic.vue";
 
 const label = ref("Diciembre 31");
 const amount = ref(null);
+const amounts = [100, 200, 500, 200, -400, -600, -300, 0, 300, 500];
 const movements = reactive([
   {
     id: 1,
