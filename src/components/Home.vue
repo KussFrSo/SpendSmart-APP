@@ -11,11 +11,13 @@
         :amount="amount"
       >
         <template #graphic> <Graphic :amounts="amounts" /> </template>
-        <template #action> <Action /> </template>
+        <template #action>
+          <Action @createMovement="createMovement" />
+        </template>
       </Resume>
     </template>
     <template #movements>
-      <Movements :movements="movements" />
+      <Movements :movements="movements" @remove="removeMovement" />
     </template>
   </Layout>
 </template>
@@ -81,4 +83,13 @@ const amounts = computed(() => {
 
   return pp;
 });
+
+const createMovement = (movement) => {
+  movements.push(movement);
+};
+
+const removeMovement = (id) => {
+  const index = movements.findIndex((x) => x.id === id);
+  movements.splice(index, 1);
+};
 </script>
