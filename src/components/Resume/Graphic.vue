@@ -1,6 +1,11 @@
 <template>
   <div>
-    <svg :viewBox="`0 0 ${GRAPHIC_WIDTH} ${GRAPHIC_HEIGHT}`">
+    <svg
+      @touchstart="tap"
+      @touchmove="tap"
+      @touchend="untap"
+      :viewBox="`0 0 ${GRAPHIC_WIDTH} ${GRAPHIC_HEIGHT}`"
+    >
       <line
         stroke="#c4c4c4"
         stroke-width="2"
@@ -16,10 +21,11 @@
         :points="points"
       />
       <line
+        v-show="showPointer"
         stroke="#04b500"
         stroke-width="2"
-        x1="200"
-        x2="200"
+        :x1="pointer"
+        :x2="pointer"
         y1="0"
         :y2="GRAPHIC_HEIGHT"
       />
@@ -29,7 +35,14 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed } from "vue";
+import { defineProps, toRefs, computed, ref } from "vue";
+
+const GRAPHIC_HEIGHT = 200;
+const GRAPHIC_WIDTH = 300;
+
+const { amounts } = toRefs(props);
+const showPointer = ref(false);
+const pointer = ref(0);
 
 const props = defineProps({
   amounts: {
@@ -37,10 +50,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
-const { amounts } = toRefs(props);
-const GRAPHIC_HEIGHT = 200;
-const GRAPHIC_WIDTH = 300;
 
 const lineZero = computed(() => {
   return amountToPixels(0);
@@ -68,6 +77,18 @@ const points = computed(() => {
     return `${points} ${x},${y}`;
   }, "0,100"); //Inicializamos el grafico en al principio a la mitad
 });
+
+const tap = ({ target, touches }) => {
+  showPointer.value = true;
+  const elementWidth = target.getBoundingClientRect().width; //Width del grafico
+  const elementX = target.getBoundingClientRect().x; //Distancia en X del grafico respecto a la pantalla
+  const touchX = touches[0].clientX; //Posicion en X donde se ha echo el touch
+  pointer.value = ((touchX - elementX) * GRAPHIC_WIDTH) / elementWidth;
+};
+
+const untap = () => {
+  showPointer.value = false;
+};
 </script>
 
 <style scoped>
