@@ -53,10 +53,5 @@ body,
     background-color: white;
     position: relative;
   }
-
-  .home {
-    border-left: 2px solid #e5e5e5;
-    border-right: 2px solid #e5e5e5;
-  }
 }
 </style>

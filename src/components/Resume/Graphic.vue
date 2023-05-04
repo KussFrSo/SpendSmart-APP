@@ -49,7 +49,7 @@ const pointer = ref(0);
 watch(pointer, (value) => {
   const index = Math.ceil(value / (GRAPHIC_WIDTH / amounts.value.length));
   if (index < 0 || index > amounts.value.length) return;
-  emit("getIndexMovement", index - 1);
+  emit("getAmountSelected", amounts.value[index - 1]);
 });
 
 const props = defineProps({
@@ -59,7 +59,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["getIndexMovement"]);
+const emit = defineEmits(["getIndexMovement", "getAmountSelected"]);
 
 const lineZero = computed(() => {
   return amountToPixels(0) ?? 0;

@@ -11,7 +11,11 @@
         :amount="amount"
       >
         <template #graphic>
-          <Graphic :amounts="amounts" @getIndexMovement="getIndexMovement" />
+          <Graphic
+            :amounts="amounts"
+            @getIndexMovement="getIndexMovement"
+            @getAmountSelected="getAmountSelected"
+          />
         </template>
         <template #action>
           <Action @createMovement="createMovement" />
@@ -60,11 +64,8 @@ onMounted(() => {
 const amounts = computed(() => {
   const today = new Date();
   const oldDate = new Date(today.getDate() - 30);
-  console.log(movements);
   const lastDays = movements
     .filter((x) => {
-      console.log(new Date(x.time));
-      console.log(oldDate);
       return new Date(x.time) > oldDate;
     })
     .map((x) => x.amount);
@@ -99,10 +100,13 @@ const save = () => {
 };
 
 const getIndexMovement = (index) => {
-  amount.value = movements[index].value;
   label.value = new Date(movements[index].time).toLocaleDateString(
     "es-ES",
     options
   );
+};
+
+const getAmountSelected = (amountSelected) => {
+  amount.value = amountSelected;
 };
 </script>
