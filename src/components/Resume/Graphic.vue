@@ -106,7 +106,7 @@ const handleClick = (event) => {
 
 const untap = () => {
   showPointer.value = false;
-  emit("getAmountIndex", null);
+  emit("getAmountSelected", null);
 };
 </script>
 
