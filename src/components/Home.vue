@@ -10,7 +10,9 @@
         :totalAmount="totalAmount"
         :amount="amount"
       >
-        <template #graphic> <Graphic :amounts="amounts" /> </template>
+        <template #graphic>
+          <Graphic :amounts="amounts" @getAmountIndex="getAmountIndex" />
+        </template>
         <template #action>
           <Action @createMovement="createMovement" />
         </template>
@@ -49,13 +51,18 @@ const amounts = computed(() => {
   const today = new Date();
   const oldDate = new Date(today.getDate() - 30);
 
-  const lastMovements = movements
+  const lastDays = movements
     .filter((x) => {
       return new Date(x.time) > oldDate;
     })
     .map((x) => x.amount);
 
-  return lastMovements;
+  return lastDays.map((m, i) => {
+    const lastMovements = lastDays.slice(0, i + 1);
+    return lastMovements.reduce((suma, movement) => {
+      return suma + movement;
+    }, 0);
+  });
 });
 
 const totalAmount = computed(() => {
@@ -77,5 +84,9 @@ const removeMovement = (id) => {
 
 const save = () => {
   localStorage.setItem("movements", JSON.stringify(movements));
+};
+
+const getAmountIndex = (value) => {
+  amount.value = value;
 };
 </script>

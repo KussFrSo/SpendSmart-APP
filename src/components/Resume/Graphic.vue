@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { defineProps, toRefs, computed, ref } from "vue";
+import { defineProps, toRefs, computed, ref, watch, defineEmits } from "vue";
 
 const GRAPHIC_HEIGHT = 200;
 const GRAPHIC_WIDTH = 300;
@@ -44,12 +44,20 @@ const { amounts } = toRefs(props);
 const showPointer = ref(false);
 const pointer = ref(0);
 
+watch(pointer, (value) => {
+  const index = Math.ceil(value / (GRAPHIC_WIDTH / amounts.value.length));
+  if (index < 0 || index > amounts.value.length) return;
+  emit("getAmountIndex", amounts.value[index - 1]);
+});
+
 const props = defineProps({
   amounts: {
     type: Array,
     default: () => [],
   },
 });
+
+const emit = defineEmits(["getAmountIndex"]);
 
 const lineZero = computed(() => {
   return amountToPixels(0);
@@ -75,7 +83,7 @@ const points = computed(() => {
     const x = (GRAPHIC_WIDTH / total) * (i + 1);
     const y = amountToPixels(amount);
     return `${points} ${x},${y}`;
-  }, "0,100"); //Inicializamos el grafico en al principio a la mitad
+  }, `0, ${amountToPixels(amounts.value.length ? amounts.value[0] : 0)}`); //Inicializamos el grafico dependiendo si existe el primer movimiento
 });
 
 const tap = ({ target, touches }) => {
@@ -88,6 +96,7 @@ const tap = ({ target, touches }) => {
 
 const untap = () => {
   showPointer.value = false;
+  emit("getAmountIndex", null);
 };
 </script>
 
