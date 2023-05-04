@@ -29,9 +29,13 @@ const showMovements = ref(false);
   align-items: center;
   padding: 14px 0;
   box-sizing: border-box;
+  background-color: white;
+
+  border-left: 2px solid #e5e5e5;
+  border-right: 2px solid #e5e5e5;
 }
 .header {
-  position: fixed;
+  position: absolute;
   width: 100vw;
 }
 .resume {
@@ -64,5 +68,17 @@ const showMovements = ref(false);
   height: 8px;
   background-color: #e5e5e5;
   border-radius: 4px;
+}
+
+@media only screen and (min-width: 500px) {
+  .header,
+  .resume,
+  .movements {
+    width: 100%;
+  }
+
+  .movements {
+    box-shadow: 0px -4px 0px 0px #e5e5e5;
+  }
 }
 </style>

@@ -4,6 +4,8 @@
       @touchstart="tap"
       @touchmove="tap"
       @touchend="untap"
+      @mousedown="handleClick"
+      @mouseup="untap"
       :viewBox="`0 0 ${GRAPHIC_WIDTH} ${GRAPHIC_HEIGHT}`"
     >
       <line
@@ -47,7 +49,7 @@ const pointer = ref(0);
 watch(pointer, (value) => {
   const index = Math.ceil(value / (GRAPHIC_WIDTH / amounts.value.length));
   if (index < 0 || index > amounts.value.length) return;
-  emit("getAmountIndex", amounts.value[index - 1]);
+  emit("getIndexMovement", index - 1);
 });
 
 const props = defineProps({
@@ -57,10 +59,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["getAmountIndex"]);
+const emit = defineEmits(["getIndexMovement"]);
 
 const lineZero = computed(() => {
-  return amountToPixels(0);
+  return amountToPixels(0) ?? 0;
 });
 
 const amountToPixels = (amount) => {
@@ -92,6 +94,14 @@ const tap = ({ target, touches }) => {
   const elementX = target.getBoundingClientRect().x; //Distancia en X del grafico respecto a la pantalla
   const touchX = touches[0].clientX; //Posicion en X donde se ha echo el touch
   pointer.value = ((touchX - elementX) * GRAPHIC_WIDTH) / elementWidth;
+};
+
+const handleClick = (event) => {
+  showPointer.value = true;
+  const elementRect = event.target.getBoundingClientRect(); //Rectángulo que rodea al elemento
+  const clickX = event.clientX; //Posición en X donde se ha hecho clic
+  pointer.value =
+    ((clickX - elementRect.x) * GRAPHIC_WIDTH) / elementRect.width;
 };
 
 const untap = () => {

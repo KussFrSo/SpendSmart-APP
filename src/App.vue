@@ -1,7 +1,7 @@
 <template>
   <Suspense>
     <template #default>
-      <Home />
+      <Home class="home" />
     </template>
     <template #fallback>
       <SplashScreen />
@@ -39,5 +39,24 @@ body,
 * {
   --brand-green: #04b500;
   --brand-blue: #0689b0;
+}
+
+@media only screen and (min-width: 500px) {
+  html,
+  body,
+  .app {
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    position: relative;
+  }
+
+  .home {
+    border-left: 2px solid #e5e5e5;
+    border-right: 2px solid #e5e5e5;
+  }
 }
 </style>
